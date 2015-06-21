@@ -459,7 +459,7 @@ function gematria(ss,   s,g,n,l,i,c)
 
             if (n == 6 && g == 6)
                 is_vav_first = 1
-			else if (n >= o_next)
+			else if (n >= o_next && !((n == 6 || n == 7) && ((g - n) % 100 == 9)))
                 return 0
 
 			if (n >= 100)
