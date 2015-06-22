@@ -210,7 +210,7 @@ function process_answer_words(s,	n)
     # new complete sentence is the numbered block start
 		n_cur = n
         # use s_prev as the block title
-		content_answers_html[n] = sprintf( "<p class=\"d1\"><a name=tes16ts%03d></a><a href=#tes16sh%03d><b>%s</b></a></p>", n, n, s_prev )
+		content_answers_html[n] = sprintf( "<p id=tes16ts%03d class=\"d1\"><a href=#tes16sh%03d><b>%s</b></a></p>", n, n, s_prev )
 		s = format_explicit_references(s)
 		content_answers_html[n] = content_answers_html[n] sprintf( "<p>%s</p>", s )
 		s_prev = ""
@@ -231,7 +231,7 @@ function process_answer_inyanim(s,	n)
 	n = recognize_numbered_block_start(s)
 	if (n != 0)	{
 		n_cur = n
-		content_answers_html[n] = content_answers_html[n] sprintf( "<p class=\"d1\"><a name=tes16ts%03d></a><a href=#tes16sh%03d><b>%s</b></a></p>", n, n, remove_index_number(content_questions_txt[n]) )
+		content_answers_html[n] = content_answers_html[n] sprintf( "<p id=tes16ts%03d class=\"d1\"><a href=#tes16sh%03d><b>%s</b></a></p>", n, n, remove_index_number(content_questions_txt[n]) )
 		s = format_explicit_references(s)
 		content_answers_html[n] = content_answers_html[n] sprintf( "<p>%s</p>", s )
 	} else if (n_cur != 0){
@@ -274,59 +274,59 @@ function content_init()
 function content_print(     i,j,jj)
 {
 	if (dbg_enabled == 1) {
-		print "<p><a name=dbgtitle></a><a style=\"font-family:Miriam;font-size:14pt;font-color=red\" href=#dbgdata>DEBUG-DATA</a></p>"
+		print "<p id=dbgtitle><a style=\"font-family:Miriam;font-size:14pt;font-color=red\" href=#dbgdata>DEBUG-DATA</a></p>"
 	}
 
-	print "<p style=\"text-align:center;font-family:times;font-size:6pt\">" "Automatically generated file with hyperlinks" " | Original files: " "<a style=\"font-family:Miriam;font-size:7pt\" href=http://kab.co.il/heb/content/view/full/42384>http://kab.co.il/heb/ content/view/full/42384</a>" " | Tool used: <a style=\"font-family:Miriam;font-size:7pt\" href=https://github.com/codingtruth/hypertes>https://github.com/codingtruth/hypertes</a><p>"
+	print "<p style=\"text-align:center;font-family:Miriam;font-size:7pt\">" "Automatically generated file with hyperlinks" "  Original files: " "<a style=\"font-family:Miriam;font-size:7pt;text-decoration:underline;\" href=http://kab.co.il/heb/content/view/full/42384>http://kab.co.il/heb/ content/view/full/42384</a>" "  Tool used: <a style=\"font-family:Miriam;font-size:7pt;text-decoration:underline;\" href=https://github.com/codingtruth/hypertes>https://github.com/codingtruth/hypertes</a><p>"
 	print "<hr>"
 	printf "<h1>%s</h1>", title_book
     printf "<h1>%s</h1>", title_helek
 	print "<hr>"
 
-    printf "<p><a name=tes16shwl></a><a style=\"font-family:Miriam;font-size:11pt\" href=#tes16shw>%s</a></p>", title_questions_words
-    printf "<p><a name=tes16shil></a><a style=\"font-family:Miriam;font-size:11pt\" href=#tes16shi>%s</a></p>", title_questions_inyanim
-    printf "<p><a name=tes16tswl></a><a style=\"font-family:Miriam;font-size:11pt\" href=#tes16tsw>%s</a></p>", title_answers_words
-    printf "<p><a name=tes16tsil></a><a style=\"font-family:Miriam;font-size:11pt\" href=#tes16tsi>%s</a></p>", title_answers_inyanim
+    printf "<p id=tes16shwl><a style=\"font-family:Miriam;font-size:11pt\" href=#tes16shw>%s</a></p>", title_questions_words
+    printf "<p id=tes16shil><a style=\"font-family:Miriam;font-size:11pt\" href=#tes16shi>%s</a></p>", title_questions_inyanim
+    printf "<p id=tes16tswl><a style=\"font-family:Miriam;font-size:11pt\" href=#tes16tsw>%s</a></p>", title_answers_words
+    printf "<p id=tes16tsil><a style=\"font-family:Miriam;font-size:11pt\" href=#tes16tsi>%s</a></p>", title_answers_inyanim
 
 	print "<hr>"
 
-    printf "<a name=tes16shw></a><a href=#tes16shwl><h2>%s</h2></a>", title_questions_words
+    printf "<h2 id=tes16shw><a href=\"#tes16shwl\">%s</a></h2>", title_questions_words
 
 	#printf "<p>%d-%d</p>", question_words_first_idx, question_words_last_idx
     for (i = question_words_first_idx; i <= question_words_last_idx; i++) {
-        printf "<p class=\"d1\"><a name=tes16sh%03d></a><a href=#tes16ts%03d>%s</a></p>", i, i, content_questions_txt[i] 
+        printf "<p id=tes16sh%03d class=\"d1\"><a href=#tes16ts%03d>%s</a></p>", i, i, content_questions_txt[i] 
     }
 
-    printf "<a name=tes16shi></a><a href=#tes16shil><h2>%s</h2></a>", title_questions_inyanim
+    printf "<h2 id=tes16shi><a href=#tes16shil>%s</a></h2>", title_questions_inyanim
 
     for (i = question_inyanim_first_idx; i <= question_inyanim_last_idx; i++) {
-        printf "<p class=\"d1\"><a name=tes16sh%03d></a><a href=#tes16ts%03d>%s</a></p>", i, i, content_questions_txt[i] 
+        printf "<p id=tes16sh%03d class=\"d1\"><a href=#tes16ts%03d>%s</a></p>", i, i, content_questions_txt[i] 
     }
 
-    printf "<a name=tes16tsw></a><a href=#tes16tswl><h2>%s</h2></a>", title_answers_words
+    printf "<h2 id=tes16tsw><a href=#tes16tswl>%s</a></h2>", title_answers_words
 
     for (i = question_words_first_idx; i <= question_words_last_idx; i++) {
         print content_answers_html[i]
         split(content_answers_referenced_by_i[i], jj, " ")
         for (j = 1; j <= length(jj); j++) {
-            printf "<p class=\"rb\"><a name=tes16sh%03d></a><a href=#tes16ts%03d>%s</a></p>", 0+(jj[j]), 0+(jj[j]), content_questions_txt[jj[j]] 
+            printf "<p id=tes16sh%03d class=\"rb\"><a href=#tes16ts%03d>%s</a></p>", 0+(jj[j]), 0+(jj[j]), content_questions_txt[jj[j]] 
             
         }
     }
     
-    printf "<a name=tes16tsi></a><a href=#tes16tsil><h2>%s</h2></a>", title_answers_inyanim
+    printf "<h2 id=tes16tsi><a href=#tes16tsil>%s</a></h2>", title_answers_inyanim
 
     for (i = question_inyanim_first_idx; i <= question_inyanim_last_idx; i++) {
         print content_answers_html[i]
         split(content_answers_referenced_by_i[i], jj, " ")
         for (j = 1; j <= length(jj); j++) {
-            printf "<p class=\"rb\"><a name=tes16sh%03d></a><a href=#tes16ts%03d>%s</a></p>", 0+(jj[j]), 0+(jj[j]), content_questions_txt[jj[j]] 
+            printf "<p id=tes16sh%03d class=\"rb\"><a href=#tes16ts%03d>%s</a></p>", 0+(jj[j]), 0+(jj[j]), content_questions_txt[jj[j]] 
             
         }
     }
 
 	if (dbg_enabled == 1) {
-		print "<p><a name=dbgdata></a><a style=\"font-family:Miriam;font-size:14pt;font-color=red\" href=#dbgtitle>DEBUG-DATA</a></p>"
+		print "<p id=dbgdata><a style=\"font-family:Miriam;font-size:14pt;font-color=red\" href=#dbgtitle>DEBUG-DATA</a></p>"
 		
 		print "<h2>COLONTITLES REMOVED</h2>"
 		print dbg_content_colontitles_removed
@@ -338,21 +338,18 @@ function content_print(     i,j,jj)
 
 function html_start()
 {
-  	printf "<html dir=RTL><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">"
+  	printf "<!DOCTYPE html><html dir=RTL style=\"width: 100%; height: 100%;\"><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">"
     printf "<style>"
     printf "h1 {font-size:18pt;font-family:times;text-align:center;}"
-    printf "h2 {font-size:14pt;font-family:times;text-align:center;}"
-    printf "h3 {font-size:12pt;font-family:times;text-align:right;}"
-#    printf "p {font-family:times; font-size:12pt; margin-top:-6px; margin-bottom:0px; text-align:justify;}"
-#    printf "p.d1 {margin-top:-6px;}"
-#    printf "p.rb {font-size:10pt; text-indent: 12px; margin-top:-6px;}"
-    printf "p {font-family:times; font-size:12pt; margin-top:2px; margin-bottom:0px; text-align:justify;}"
-    printf "p.d1 {margin-top:6px;}"
-    printf "p.rb {font-size:10pt; text-indent: 12px; margin-top:6px;}"
+    printf "h2 {font-size:14pt;font-family:times;text-align:center;page-break-inside:avoid;}"
+    printf "h3 {font-size:12pt;font-family:times;text-align:right;margin-top:10pt;page-break-after:avoid;}"
+    printf "p {font-family:times; font-size:12pt; margin-top:5pt; margin-bottom:5pt; text-align:justify;}"
+    printf "p.d1 {margin-top:14pt;}"
+    printf "p.rb {font-size:12pt; text-indent: 12pt; margin-top:7pt;}"
     printf "a {color:black; text-decoration:none;}"
     printf "a.r {color:black; font-size:12pt; font-family:Miriam; text-decoration:none;}"
     printf "</style>"
-    printf "</head><body>"
+    printf "</head><body style=\"margin: 0; padding: 0;\">"
 }
 
 function html_end()
