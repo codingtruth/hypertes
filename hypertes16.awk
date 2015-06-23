@@ -277,7 +277,7 @@ function content_print(     i,j,jj)
 		print "<p id=dbgtitle><a style=\"font-family:Miriam;font-size:14pt;font-color=red\" href=#dbgdata>DEBUG-DATA</a></p>"
 	}
 
-	print "<p style=\"text-align:center;font-family:Miriam;font-size:7pt\">" "Automatically generated file with hyperlinks" "  Original files: " "<a style=\"font-family:Miriam;font-size:7pt;text-decoration:underline;\" href=http://kab.co.il/heb/content/view/full/42384>http://kab.co.il/heb/ content/view/full/42384</a>" "  Tool used: <a style=\"font-family:Miriam;font-size:7pt;text-decoration:underline;\" href=https://github.com/codingtruth/hypertes>https://github.com/codingtruth/hypertes</a><p>"
+	print "<p style=\"text-align:center;font-family:Miriam;font-size:7pt\">" strftime("%b %d %Y %H:%M:%S %Z",systime()) "<br>" "Automatically generated file with hyperlinks" "  Original files: " "<a style=\"font-family:Miriam;font-size:7pt;text-decoration:underline;\" href=http://kab.co.il/heb/content/view/full/42384>http://kab.co.il/heb/ content/view/full/42384</a>" "  Tool used: <a style=\"font-family:Miriam;font-size:7pt;text-decoration:underline;\" href=https://github.com/codingtruth/hypertes>https://github.com/codingtruth/hypertes</a><p>"
 	print "<hr>"
 	printf "<h1>%s</h1>", title_book
     printf "<h1>%s</h1>", title_helek
@@ -342,10 +342,10 @@ function html_start()
     printf "<style>"
     printf "h1 {font-size:18pt;font-family:times;text-align:center;}"
     printf "h2 {font-size:14pt;font-family:times;text-align:center;page-break-inside:avoid;}"
-    printf "h3 {font-size:12pt;font-family:times;text-align:right;margin-top:10pt;page-break-after:avoid;}"
-    printf "p {font-family:times; font-size:12pt; margin-top:5pt; margin-bottom:5pt; text-align:justify;}"
-    printf "p.d1 {margin-top:14pt;}"
-    printf "p.rb {font-size:12pt; text-indent: 12pt; margin-top:7pt;}"
+    printf "h3 {font-size:12pt;font-family:times;text-align:right;margin-top:21pt;page-break-after:avoid;}"
+    printf "p {font-family:times; font-size:12pt; margin-top:4pt; margin-bottom:4pt; text-align:justify;}"
+    printf "p.d1 {margin-top:14pt;margin-top:6pt; margin-bottom:4pt;}"
+    printf "p.rb {font-size:10pt; text-indent: 12pt; margin-top:4pt;margin-bottom:6pt;}"
     printf "a {color:black; text-decoration:none;}"
     printf "a.r {color:black; font-size:12pt; font-family:Miriam; text-decoration:none;}"
     printf "</style>"

@@ -50,8 +50,8 @@ $(TES16_ST_HTML): $(TES16_ST_TXT)
 $(TES16_ST_PDF): $(TES16_ST_HTML)
 	$(HTML2PDF) \
 	--print-media-type \
-	--page-width 46.5mm --page-height 92mm  \
-	--margin-top 1mm --margin-bottom 1mm --margin-left 0.5mm --margin-right 0.5mm \
+	--page-width 46mm --page-height 92mm  \
+	--margin-top 1mm --margin-bottom 1mm --margin-left 0.25mm --margin-right 0.25mm \
 	--dpi 300 \
 	--disable-smart-shrinking \
 	$(TES16_ST_HTML) $(TES16_ST_PDF)
