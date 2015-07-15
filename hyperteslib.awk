@@ -1,27 +1,18 @@
 #!/bin/awk -f
 
+# this file must be included by main script with tes_init() function defined
+
 BEGIN {
 	dbg_enabled = 0
 
-	title_helek_number = "חלק שש עשרה"
-	title_helek_name   = "ג\' העולמות בריאה יצירה ועשיה"
+	tes_init()
 	
-	title_book = "תלמוד עשר הספירות"
-    title_helek = "חלק ט\"ז בי\"ע"
-    title_questions_words = "לוח השאלות לפירוש המלות"
-    title_answers_words = "לוח התשובות לפירוש המלות"
-	title_questions_inyanim = "לוח השאלות לענינים"
-	title_answers_inyanim = "לוח התשובות לענינים"
-	colontitle_regex = "תלמוד עשר הספירות|לוח השאלות לפירוש המלות|לוח התשובות לפירוש המלות|לוח השאלות לענינים|לוח התשובות לענינים"
-#	"חלק \"ז" ".*" "בי\"ע" "|" "חלק \"ז" ".*" "בי\" ע"
-	colontitle_regex1 = "חלק " ".*" "בי\"ע" "|" "חלק " ".*" "בי\" ע"
     numbered_block_start_regex = "^[א-ת]+\)"
 	
-	PART_OR_PNIMI = 1
-	PART_QUESTIONS_WORDS = 2
-	PART_QUESTIONS_INYANIM = 3
-	PART_ANSWERS_WORDS = 4
-	PART_ANSWERS_INYANIM = 5
+	PART_QUESTIONS_WORDS = 1
+	PART_QUESTIONS_INYANIM = 2
+	PART_ANSWERS_WORDS = 3
+	PART_ANSWERS_INYANIM = 4
 
 	incomplete_sentence = ""
 
@@ -36,16 +27,6 @@ BEGIN {
 	part = 0
     s_prev = ""
 
-    manual_typos[1] =        "זה) עי\' לעיל תשובה ס\"ד."
-    manual_typos_fixes[1] =  "עה) עי\' לעיל תשובה ס\"ד."
-    manual_typos[2] =        "^\\."
-    manual_typos_fixes[2] =  ""
-    manual_typos[3] =        "----------------------------"
-    manual_typos_fixes[3] =  ""
-	manual_typos[4] =		 "ולכלים דאחור, שהם אח\"פ או תבה\"י שכבר שלט"
-	manual_typos_fixes[4] =	 "ולכלים דאחור, שהם אח\"פ או תנה\"י שכבר שלט"
-	manual_typos[5] =		 "ותבהי\"מ דגוף, נעשו לחיצוניות ואחורים דגוף"
-	manual_typos_fixes[5] =	 "ותנהי\"מ דגוף, נעשו לחיצוניות ואחורים דגוף"
 
 	html_start()
 
@@ -83,9 +64,7 @@ function process_line(s)
     #printf "<p>|%s|</p>", s
 
 
-	if (part == PART_OR_PNIMI) {
-		process_or_pnimi(s)
-	} else if (part == PART_QUESTIONS_WORDS) {
+	if (part == PART_QUESTIONS_WORDS) {
 		process_question(s)
 	} else if (part == PART_QUESTIONS_INYANIM) {
 		process_question(s)
@@ -115,10 +94,7 @@ function fetch_clean_line(s)
 }
 function is_title(s)
 {
-	if (s == title_helek_name) {
-		return 1
-	}
-	else if (s == title_questions_words) {
+	if (s == title_questions_words) {
 		return 1
 	}
 	else if (s == title_questions_inyanim) {
@@ -134,12 +110,7 @@ function is_title(s)
 }
 function recognize_title(s)
 {
-	if (s == title_helek_name) {
-		part = PART_OR_PNIMI
-		n_cur = 0
-		return 1
-	}
-	else if (s == title_questions_words) {
+	if (s == title_questions_words) {
 		part = PART_QUESTIONS_WORDS
 		n_cur = 0
 		return 1
@@ -224,7 +195,7 @@ function process_answer_words(s,	n)
     # new complete sentence is the numbered block start
 		n_cur = n
         # use s_prev as the block title
-		content_answers_html[n] = sprintf( "<p id=tes16ts%03d class=\"d1\"><a href=#tes16sh%03d><b>%s</b></a></p>", n, n, s_prev )
+		content_answers_html[n] = sprintf( "<p id=tes" tes_n "ts%03d class=\"d1\"><a href=#tes" tes_n  "sh%03d><b>%s</b></a></p>", n, n, s_prev )
 		s = format_explicit_references(s)
 		content_answers_html[n] = content_answers_html[n] sprintf( "<p>%s</p>", s )
 		s_prev = ""
@@ -245,7 +216,7 @@ function process_answer_inyanim(s,	n)
 	n = recognize_numbered_block_start(s)
 	if (n != 0)	{
 		n_cur = n
-		content_answers_html[n] = content_answers_html[n] sprintf( "<p id=tes16ts%03d class=\"d1\"><a href=#tes16sh%03d><b>%s</b></a></p>", n, n, remove_index_number(content_questions_txt[n]) )
+		content_answers_html[n] = content_answers_html[n] sprintf( "<p id=tes" tes_n "ts%03d class=\"d1\"><a href=#tes" tes_n "sh%03d><b>%s</b></a></p>", n, n, remove_index_number(content_questions_txt[n]) )
 		s = format_explicit_references(s)
 		content_answers_html[n] = content_answers_html[n] sprintf( "<p>%s</p>", s )
 	} else if (n_cur != 0){
@@ -276,8 +247,6 @@ function remove_index_number(s)
 }
 function content_init()
 {
-	content_ormakif_txt[1] = ""
-	content_orpnimi_txt[1] = ""
     content_questions_txt[1] = ""
     content_answers_html[1] = ""
 	#content_answers_title_txt[1] = ""
@@ -293,50 +262,50 @@ function content_print(     i,j,jj)
 		print "<p id=dbgtitle><a style=\"font-family:Miriam;font-size:14pt;font-color=red\" href=#dbgdata>DEBUG-DATA</a></p>"
 	}
 
-	print "<p style=\"text-align:center;font-family:Miriam;font-size:7pt\">" strftime("%b %d %Y %H:%M:%S %Z",systime()) "<br>" "Automatically generated file with hyperlinks" "  Original files: " "<a style=\"font-family:Miriam;font-size:7pt;text-decoration:underline;\" href=http://kab.co.il/heb/content/view/full/42384>http://kab.co.il/heb/ content/view/full/42384</a>" "  Tool used: <a style=\"font-family:Miriam;font-size:7pt;text-decoration:underline;\" href=https://github.com/codingtruth/hypertes>https://github.com/codingtruth/hypertes</a><p>"
+	print "<p style=\"text-align:center;font-family:Miriam;font-size:7pt\">" strftime("%b %d %Y %H:%M:%S %Z",systime()) "<br>" "Automatically generated file with hyperlinks" "  Original files: " "<a style=\"font-family:Miriam;font-size:7pt;text-decoration:underline;\" href=http://www.kab.co.il/heb/content/view/full/42323>http://www.kab.co.il/ heb/content/view/full/42323</a>" "  Tool used: <a style=\"font-family:Miriam;font-size:7pt;text-decoration:underline;\" href=https://github.com/codingtruth/hypertes>https://github.com/codingtruth/hypertes</a><p>"
 	print "<hr>"
 	printf "<h1>%s</h1>", title_book
     printf "<h1>%s</h1>", title_helek
 	print "<hr>"
 
-    printf "<p id=tes16shwl><a style=\"font-family:Miriam;font-size:11pt\" href=#tes16shw>%s</a></p>", title_questions_words
-    printf "<p id=tes16shil><a style=\"font-family:Miriam;font-size:11pt\" href=#tes16shi>%s</a></p>", title_questions_inyanim
-    printf "<p id=tes16tswl><a style=\"font-family:Miriam;font-size:11pt\" href=#tes16tsw>%s</a></p>", title_answers_words
-    printf "<p id=tes16tsil><a style=\"font-family:Miriam;font-size:11pt\" href=#tes16tsi>%s</a></p>", title_answers_inyanim
+    printf "<p id=tes" tes_n "shwl><a style=\"font-family:Miriam;font-size:11pt\" href=#tes" tes_n "shw>%s</a></p>", title_questions_words
+    printf "<p id=tes" tes_n "shil><a style=\"font-family:Miriam;font-size:11pt\" href=#tes" tes_n "shi>%s</a></p>", title_questions_inyanim
+    printf "<p id=tes" tes_n "tswl><a style=\"font-family:Miriam;font-size:11pt\" href=#tes" tes_n "tsw>%s</a></p>", title_answers_words
+    printf "<p id=tes" tes_n "tsil><a style=\"font-family:Miriam;font-size:11pt\" href=#tes" tes_n "tsi>%s</a></p>", title_answers_inyanim
 
 	print "<hr>"
 
-    printf "<h2 id=tes16shw><a href=\"#tes16shwl\">%s</a></h2>", title_questions_words
+    printf "<h2 id=tes" tes_n "shw><a href=\"#tes" tes_n "shwl\">%s</a></h2>", title_questions_words
 
 	#printf "<p>%d-%d</p>", question_words_first_idx, question_words_last_idx
     for (i = question_words_first_idx; i <= question_words_last_idx; i++) {
-        printf "<p id=tes16sh%03d class=\"d1\"><a href=#tes16ts%03d>%s</a></p>", i, i, content_questions_txt[i] 
+        printf "<p id=tes" tes_n "sh%03d class=\"d1\"><a href=#tes" tes_n "ts%03d>%s</a></p>", i, i, content_questions_txt[i] 
     }
 
-    printf "<h2 id=tes16shi><a href=#tes16shil>%s</a></h2>", title_questions_inyanim
+    printf "<h2 id=tes" tes_n "shi><a href=#tes" tes_n "shil>%s</a></h2>", title_questions_inyanim
 
     for (i = question_inyanim_first_idx; i <= question_inyanim_last_idx; i++) {
-        printf "<p id=tes16sh%03d class=\"d1\"><a href=#tes16ts%03d>%s</a></p>", i, i, content_questions_txt[i] 
+        printf "<p id=tes" tes_n "sh%03d class=\"d1\"><a href=#tes" tes_n "ts%03d>%s</a></p>", i, i, content_questions_txt[i] 
     }
 
-    printf "<h2 id=tes16tsw><a href=#tes16tswl>%s</a></h2>", title_answers_words
+    printf "<h2 id=tes" tes_n "tsw><a href=#tes" tes_n "tswl>%s</a></h2>", title_answers_words
 
     for (i = question_words_first_idx; i <= question_words_last_idx; i++) {
         print content_answers_html[i]
         split(content_answers_referenced_by_i[i], jj, " ")
         for (j = 1; j <= length(jj); j++) {
-            printf "<p id=tes16sh%03d class=\"rb\"><a href=#tes16ts%03d>%s</a></p>", 0+(jj[j]), 0+(jj[j]), content_questions_txt[jj[j]] 
+            printf "<p id=tes" tes_n "sh%03d class=\"rb\"><a href=#tes" tes_n "ts%03d>%s</a></p>", 0+(jj[j]), 0+(jj[j]), content_questions_txt[jj[j]] 
             
         }
     }
     
-    printf "<h2 id=tes16tsi><a href=#tes16tsil>%s</a></h2>", title_answers_inyanim
+    printf "<h2 id=tes" tes_n "tsi><a href=#tes" tes_n "tsil>%s</a></h2>", title_answers_inyanim
 
     for (i = question_inyanim_first_idx; i <= question_inyanim_last_idx; i++) {
         print content_answers_html[i]
         split(content_answers_referenced_by_i[i], jj, " ")
         for (j = 1; j <= length(jj); j++) {
-            printf "<p id=tes16sh%03d class=\"rb\"><a href=#tes16ts%03d>%s</a></p>", 0+(jj[j]), 0+(jj[j]), content_questions_txt[jj[j]] 
+            printf "<p id=tes" tes_n "sh%03d class=\"rb\"><a href=#tes" tes_n "ts%03d>%s</a></p>", 0+(jj[j]), 0+(jj[j]), content_questions_txt[jj[j]] 
             
         }
     }
@@ -407,7 +376,7 @@ function format_explicit_references(sss,     s,i,pos,len,a,qn,sr,srepl_orig,srep
                 split(arr[0], arr_s, " ")
 
                 g = gematria(arr_s[2])
-                sss_snew = sprintf("<a style=\"font-family:Miriam;font-size:11pt\" href=#tes16ts%03d>%s %s</a>", 
+                sss_snew = sprintf("<a style=\"font-family:Miriam;font-size:11pt\" href=#tes" tes_n "ts%03d>%s %s</a>", 
                     g, arr_s[1], arr_s[2])
 
                 content_add_explicit_reference(n_cur, g)
@@ -415,7 +384,7 @@ function format_explicit_references(sss,     s,i,pos,len,a,qn,sr,srepl_orig,srep
                 for (arr_s_i = 3; arr_s_i <= length(arr_s); arr_s_i++) {
                     g = gematria(arr_s[arr_s_i])
                     if (g != 0) {
-                        sss_snew = sss_snew sprintf("<a style=\"font-family:Miriam;font-size:11pt\" href=#tes16ts%03d> %s</a>", 
+                        sss_snew = sss_snew sprintf("<a style=\"font-family:Miriam;font-size:11pt\" href=#tes" tes_n "ts%03d> %s</a>", 
                             g , arr_s[arr_s_i])
                         content_add_explicit_reference(n_cur, g)
                     } else {
