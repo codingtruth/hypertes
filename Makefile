@@ -29,6 +29,15 @@ TES02_ST_TXT   = $(TXT_DIR)/tes02-shehelot-tshuvot.txt
 TES02_ST_HTM   = $(HTM_DIR)/tes02-shehelot-tshuvot.html
 TES02_ST_PDF   = $(PDF_DIR)/tes02-shehelot-tshuvot.pdf
 
+TES03_SM_TXT   = $(TXT_DIR)/heb_o_bs-tes-03_luah-sheelot-le-pirush-milot.txt
+TES03_SI_TXT   = $(TXT_DIR)/heb_o_bs-tes-03_luah-sheelot-le-inyanim.txt
+TES03_TM_TXT   = $(TXT_DIR)/heb_o_bs-tes-03_luah-tshuvot-le-pirush-milot.txt
+TES03_TI_TXT   = $(TXT_DIR)/heb_o_bs-tes-03_luah-tshuvot-le-inyanim.txt
+TES03_TXT      = $(TXT_DIR)/tes03.txt
+TES03_ST_TXT   = $(TXT_DIR)/tes03-shehelot-tshuvot.txt
+TES03_ST_HTM   = $(HTM_DIR)/tes03-shehelot-tshuvot.html
+TES03_ST_PDF   = $(PDF_DIR)/tes03-shehelot-tshuvot.pdf
+
 TES16_OP_TXT   = $(TXT_DIR)/heb_o_bs-tes-16_or-pnimi.txt
 TES16_SM_TXT   = $(TXT_DIR)/heb_o_bs-tes-16_luah-sheelot-le-pirush-milot.txt
 TES16_SI_TXT   = $(TXT_DIR)/heb_o_bs-tes-16_luah-sheelot-le-inyanim.txt
@@ -39,9 +48,9 @@ TES16_ST_TXT   = $(TXT_DIR)/tes16-shehelot-tshuvot.txt
 TES16_ST_HTM   = $(HTM_DIR)/tes16-shehelot-tshuvot.html
 TES16_ST_PDF   = $(PDF_DIR)/tes16-shehelot-tshuvot.pdf
 
-TES_ST_TXT = $(TES01_ST_TXT) $(TES02_ST_TXT) $(TES16_ST_TXT)
-TES_ST_HTM = $(TES01_ST_HTM) $(TES02_ST_HTM) $(TES16_ST_HTM)
-TES_ST_PDF = $(TES01_ST_PDF) $(TES02_ST_PDF) $(TES16_ST_PDF)
+TES_ST_TXT = $(TES01_ST_TXT) $(TES02_ST_TXT) $(TES03_ST_TXT) $(TES16_ST_TXT)
+TES_ST_HTM = $(TES01_ST_HTM) $(TES02_ST_HTM) $(TES03_ST_HTM) $(TES16_ST_HTM)
+TES_ST_PDF = $(TES01_ST_PDF) $(TES02_ST_PDF) $(TES03_ST_PDF) $(TES16_ST_PDF)
 
 $(TES01_ST_TXT): $(TES01_SM_TXT) $(TES01_SI_TXT) $(TES01_TM_TXT) $(TES01_TI_TXT)
 	rm -f $(TES01_ST_TXT)
@@ -56,6 +65,13 @@ $(TES02_ST_TXT): $(TES02_SM_TXT) $(TES02_SI_TXT) $(TES02_TM_TXT) $(TES02_TI_TXT)
 	cat $(TES02_SI_TXT) >> $(TES02_ST_TXT)
 	cat $(TES02_TM_TXT) >> $(TES02_ST_TXT)
 	cat $(TES02_TI_TXT) >> $(TES02_ST_TXT)
+
+$(TES03_ST_TXT): $(TES03_SM_TXT) $(TES03_SI_TXT) $(TES03_TM_TXT) $(TES03_TI_TXT)
+	rm -f $(TES03_ST_TXT)
+	cat $(TES03_SM_TXT) >> $(TES03_ST_TXT)
+	cat $(TES03_SI_TXT) >> $(TES03_ST_TXT)
+	cat $(TES03_TM_TXT) >> $(TES03_ST_TXT)
+	cat $(TES03_TI_TXT) >> $(TES03_ST_TXT)
 
 $(TES16_ST_TXT): $(TES16_SM_TXT) $(TES16_SI_TXT) $(TES16_TM_TXT) $(TES16_TI_TXT)
 	rm -f $(TES16_ST_TXT)
@@ -79,6 +95,11 @@ $(TES02_ST_HTM): $(TES02_ST_TXT)
 	cat hypertes02st.awk hyperteslib.awk > tmp.awk
 	awk -f tmp.awk $(TES02_ST_TXT) > $(TES02_ST_HTM)
 
+$(TES03_ST_HTM): $(TES03_ST_TXT)
+	mkdir -p $(HTM_DIR)
+	cat hypertes03st.awk hyperteslib.awk > tmp.awk
+	awk -f tmp.awk $(TES03_ST_TXT) > $(TES03_ST_HTM)
+
 $(TES16_ST_HTM): $(TES16_ST_TXT)
 	mkdir -p $(HTM_DIR)
 	cat hypertes16st.awk hyperteslib.awk > tmp.awk
@@ -90,10 +111,14 @@ $(TES01_ST_PDF): $(TES01_ST_HTM)
 $(TES02_ST_PDF): $(TES02_ST_HTM)
 	$(HTM2PDF) $(HTM2PDF_PARAMS) $(TES02_ST_HTM) $(TES02_ST_PDF)
 
+$(TES03_ST_PDF): $(TES03_ST_HTM)
+	$(HTM2PDF) $(HTM2PDF_PARAMS) $(TES03_ST_HTM) $(TES03_ST_PDF)
+
 $(TES16_ST_PDF): $(TES16_ST_HTM)
 	$(HTM2PDF) $(HTM2PDF_PARAMS) $(TES16_ST_HTM) $(TES16_ST_PDF)
 
-all: $(TES_ST_PDF)
+#all: $(TES_ST_PDF)
+all: $(TES03_ST_PDF)
 
 clean-pdf:
 	rm -f $(TES_ST_PDF)
