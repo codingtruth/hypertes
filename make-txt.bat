@@ -14,6 +14,16 @@
 @set TES01_DOC=%TES01_OP_DOC% %TES01_IP_DOC% %TES01_ST_DOC%
 
 
+@set TES02_OP_DOC=%DOC_DIR%\heb_o_bs-tes-02_or-pnimi.doc
+@set TES02_IP_DOC=%DOC_DIR%\heb_o_bs-tes-02_istaklut-pnimit.doc
+@set TES02_SM_DOC=%DOC_DIR%\heb_o_bs-tes-02_luah-sheelot-le-pirush-milot.doc
+@set TES02_SI_DOC=%DOC_DIR%\heb_o_bs-tes-02_luah-sheelot-le-inyanim.doc
+@set TES02_TM_DOC=%DOC_DIR%\heb_o_bs-tes-02_luah-tshuvot-le-pirush-milot.doc
+@set TES02_TI_DOC=%DOC_DIR%\heb_o_bs-tes-02_luah-tshuvot-le-inyanim.rtf
+@set TES02_ST_DOC=%TES02_SM_DOC% %TES02_SI_DOC% %TES02_TM_DOC% %TES02_TI_DOC%
+@set TES02_DOC=%TES02_OP_DOC% %TES02_IP_DOC% %TES02_ST_DOC%
+
+
 @set TES16_OP_DOC=%DOC_DIR%\heb_o_bs-tes-16_or-pnimi.doc
 @set TES16_SM_DOC=%DOC_DIR%\heb_o_bs-tes-16_luah-sheelot-le-pirush-milot.doc
 @set TES16_SI_DOC=%DOC_DIR%\heb_o_bs-tes-16_luah-sheelot-le-inyanim.doc
@@ -23,6 +33,9 @@
 @set TES16_DOC=%TES16_OP_DOC% %TES16_ST_DOC%
 
 
-soffice --headless --convert-to txt:"Text (encoded):UTF8,LF,,," --outdir %TXT_DIR% %TES01_DOC%
+@set TES_ST_DOC=%TES01_ST_DOC% %TES02_ST_DOC% %TES16_ST_DOC%
 
-soffice --headless --convert-to txt:"Text (encoded):UTF8,LF,,," --outdir %TXT_DIR% %TES16_DOC%
+
+soffice --headless --convert-to txt:"Text (encoded):UTF8,LF,,," --outdir %TXT_DIR% %TES_ST_DOC%
+
+@rem soffice --headless --convert-to txt:"Text (encoded):UTF8,LF,,," --outdir %TXT_DIR% %TES16_DOC%
